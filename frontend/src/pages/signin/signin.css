@@ -1,0 +1,31 @@
+.signin-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background: rgb(239 239 239);
+    border-radius: 10px;
+}
+
+.signin-button {
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    background: var(--background-btn);
+    color: white;
+}
+
+.refer {
+    color: #007f5f;
+    text-transform: capitalize;
+    text-decoration: none;
+    font-size: 15px;
+}

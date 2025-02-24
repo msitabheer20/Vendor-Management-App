@@ -1,0 +1,42 @@
+.card-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgb(245, 245, 245);
+    border-radius: 10px;
+    height: 280px;
+    width: 250px;
+    padding: 10px;
+}
+
+.shop-text {
+    font-size: 15px;
+}
+
+.shop-name {
+    font-size: 30px;
+}
+
+.owner-name {
+    font-weight: bold;
+}
+
+.owner-txt {
+    font-size: 18px;
+}
+
+.owner-loc {
+    font-size: 12px;
+}
+
+.product-link {
+    font-size: 15px;
+    cursor: pointer;
+    padding: 8px 0px;
+    border-radius: 10px;
+    display: inline-block;
+    width: auto;
+    outline: none;
+    border: none;
+}
+

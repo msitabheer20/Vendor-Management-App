@@ -1,0 +1,109 @@
+.table-container {
+    width: 93%;
+    margin: auto;
+    padding: 20px;
+    background: #f8f7f7;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.table-form-container {
+    display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.addShopifyBtn {
+    padding: 8px 12px;
+  border: none;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  margin: 2px;
+}
+
+.masked {
+    font-family: monospace;
+    color: gray;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.shopifyDetails {
+    display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.copy {
+    background: #4a90e2;
+    color: white;
+}
+
+.copy:hover {
+    background: #357ac3;
+}
+
+.edit {
+    background: #ffa500;
+}
+
+.edit:hover {
+    background: #cc8400;
+}
+
+.delete {
+    background: #ff4d4d;
+}
+
+.delete:hover {
+    background: #cc0000;
+}
+
+.table-btn {
+    padding: 10px 15px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+
+.masked:hover {
+    color: black;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+  
+th, td {
+border: 1px solid #ddd;
+padding: 10px;
+text-align: center;
+}
+
+th {
+background: #007f5f;
+color: white;
+}
+
+.masked:hover {
+color: black;
+font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+    input {
+        width: 100%;
+    }
+}

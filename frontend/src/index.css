@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+:root {
+  --text-color: #575757;
+  --text-font: 'roboto';
+  --background-light: rgb(245, 245, 245);
+  --background-btn: #007f5f;
+  --p-background: #121212;
+  --p-text: #ffffff;
+  --p-border: #333;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: var(--text-font);
+  box-sizing: border-box;
+}
+
+::placeholder {
+  color: rgb(218, 216, 216);
+}
+
+body {
+  background: var(--background-light);
+}
