@@ -18,10 +18,6 @@ const Products = () => {
         setStores(res.data);
     };
 
-    const getStoreData = async () => {
-
-    }
-
     return (
         <>
             <div className="product-container">
