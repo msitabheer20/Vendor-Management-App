@@ -1,12 +1,14 @@
-import "./card.css"
+import { Card, Text } from "@shopify/polaris";
+import "./card.css"; // Ensure this is correctly imported
 
-const Card = () => {
+const PolarisCard = () => {
     return (
-      <div className="card-item">
-        This is a card
-      </div>
-    )
-  }
-  
-  export default Card
-  
+        <div className="card-item">
+            <Card sectioned>
+                <Text variant="headingMd" as="p">This is a card</Text>
+            </Card>
+        </div>
+    );
+};
+
+export default PolarisCard;

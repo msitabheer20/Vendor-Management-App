@@ -1,22 +1,24 @@
-import "./shopCard.css"
+import { Card, Text, Button, Box } from "@shopify/polaris";
 
 const ShopCard = () => {
-
     return (
-        <div className="card-container">
-            <div>
-                <p className="shop-text">Shop id : 123456</p>
-                <h1 className="shop-name">Store Name</h1>
-            </div>
+        <Card>
+            <Box padding="200">
+                <Text as="p" variant="bodyMd">Shop id : 123456</Text>
+                <Text as="h1" variant="headingLg">Store Name</Text>
+            </Box>
+            
+            <Box padding="200">
+                <Text as="p" variant="bodyMd">Owner :</Text>
+                <Text as="h2" variant="headingMd" fontWeight="bold">Jonathon Smith</Text>
+                <Text as="p" variant="bodySm">California, <span>U.S</span></Text>
+            </Box>
+            
+            <Box padding="200">
+                <Button fullWidth>See Products →</Button>
+            </Box>
+        </Card>
+    );
+};
 
-            <div>
-                <p className="owner-txt">Owner : </p>
-                <h2 className="owner-name">Jonathon Smith</h2>
-                <p className="owner-loc">California, <span>U.S</span></p>
-            </div>
-            <button className="product-link">See Products -&gt;</button>
-        </div>
-    )
-}
-
-export default ShopCard
+export default ShopCard;
