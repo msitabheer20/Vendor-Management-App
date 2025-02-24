@@ -1,4 +1,5 @@
 import Store from "../models/storeModel.js";
+const { createAdminRestApiClient } = require('@shopify/admin-api-client');
 
 // Fetch all stores
 export const getStores = async (req, res) => {
@@ -22,6 +23,14 @@ export const saveStore = async (req, res) => {
         } else {
             // Create new store
             const newStore = new Store({ storeName, shopLink, accessToken });
+            console.log(newStore);
+
+            const shopify = createAdminRestApiClient({
+                storeDomain: newStore.shopLink,
+                apiVersion: '2024-10',
+                accessToken: newStore.accessToken,
+            });
+
             await newStore.save();
             res.json({ message: "Store added successfully" });
         }

@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@shopify/admin-api-client": "^1.0.6",
     "@shopify/polaris": "^13.9.3",
     "axios": "^1.7.9",
     "react": "^18.3.1",
