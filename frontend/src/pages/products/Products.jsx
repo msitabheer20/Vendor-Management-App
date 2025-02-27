@@ -2,13 +2,16 @@ import axios from "axios";
 import ShopCard from "../../components/shopCard/ShopCard"
 import "./product.css"
 import { useEffect, useState } from "react";
-import { Page, Badge } from "@shopify/polaris"
+import { useNavigate } from "react-router-dom";
+import { Page, Badge, InlineStack, Button } from "@shopify/polaris"
+import {PlusIcon} from '@shopify/polaris-icons';
 
 const API_URL = "http://localhost:5000/api/stores";
 
-const Products = () => {
+const Products = () => {    
 
     const [stores, setStores] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchStores();
@@ -16,6 +19,7 @@ const Products = () => {
 
     const fetchStores = async () => {
         const res = await axios.get(API_URL);
+        console.log(res.data)
         setStores(res.data);
     };
 
@@ -26,22 +30,16 @@ const Products = () => {
                 titleMetadata={<Badge tone="success">Paid</Badge>}
                 subtitle="Search products in stores"
                 compactTitle
-                
-
-                secondaryActions={[
-                    {
-                        content: 'View on your store',
-                        onAction: () => alert('View on your store action'),
-                    },
-                ]}
+                fullWidth
+                primaryAction={<Button icon={PlusIcon} onClick={()=>navigate("/")} variant="primary">Add Store</Button>}
             >
-                <div className="product-container">
+                <InlineStack align="start">
                     {
                         stores?.map((store) => (
                             <ShopCard key={store._id} id={store._id} url={store.shopLink} token={store.accessToken} />
                         ))
                     }
-                </div>
+                </InlineStack>
             </Page>
         </>
     )

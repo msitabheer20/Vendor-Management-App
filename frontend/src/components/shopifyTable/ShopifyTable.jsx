@@ -120,7 +120,7 @@
 // export default ShopifyTable;
 
 import { useEffect, useState } from "react";
-import { Button, Card, DataTable, Layout, Page, TextField } from "@shopify/polaris";
+import { Button, Card, DataTable, InlineStack, Layout, Page, Text, TextField } from "@shopify/polaris";
 import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/stores";
@@ -176,31 +176,31 @@ const ShopifyTable = () => {
     const rows = stores.map((store, index) => [
         store.storeName,
         store.shopLink,
-        <span key={index} className="masked" title={store.accessToken}>{"•".repeat(12)}</span>,
-        <div key={index} style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+        <Text key={index} className="masked">{"•".repeat(12)}</Text>,
+        <InlineStack key={index} align="space-between">
             <Button size="slim" onClick={() => handleCopy(store.accessToken, index)}>
                 {copiedIndex === index ? "Copied!" : "Copy"}
             </Button>
             <Button size="slim" onClick={() => handleEdit(store)}>Edit</Button>
             <Button size="slim" destructive onClick={() => handleDelete(store._id)}>Delete</Button>
-        </div>
+        </InlineStack>
     ]);
 
     return (
             <Layout>
                 <Layout.Section>
                     <Card sectioned>
-                        <div style={{ display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" }}>
+                        <InlineStack align="space-around">
                             <TextField label="Shopify Store Name" value={storeName} onChange={setStoreName} autoComplete="off" />
                             <TextField label="Shopify Shop Link" value={shopLink} onChange={setShopLink} autoComplete="off" />
                             <TextField label="Shopify Access Token" value={accessToken} onChange={setAccessToken} type="password" autoComplete="off" />
-                            <Button primary onClick={handleAddStore}>{editId ? "Update Store" : "Add Store"}</Button>
-                        </div>
+                            <Button variant="primary" onClick={handleAddStore}>{editId ? "Update Store" : "Add Store"}</Button>
+                        </InlineStack>
                     </Card>
-                </Layout.Section>
-                <Layout.Section>
+
                     <Card>
-                        <DataTable
+                    <DataTable
+                        verticalAlign="middle"
                             columnContentTypes={["text", "text", "text", "numeric"]}
                             headings={["Store Name", "Shop Link", "Access Token", "Actions"]}
                             rows={rows}

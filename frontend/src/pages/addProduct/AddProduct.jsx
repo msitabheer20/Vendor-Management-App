@@ -88,41 +88,51 @@
 
 // export default AddProduct
 
-import { Page, BlockStack, TextField, Button, Card, Layout, Text, Box, Divider, InlineStack, Checkbox } from "@shopify/polaris";
-import { useState } from "react";
+import { Page, BlockStack, TextField, Button, Card, Layout, Text, Box, Divider, InlineStack, Checkbox, Select } from "@shopify/polaris";
+import { useCallback, useState } from "react";
 import "./addProduct.css";
 import { RichTextEditor } from "../../components/richTextEditor/RichTextEditor";
 import 'react-quill/dist/quill.snow.css';
 import { MediaGrid } from "../../components/mediaGrid/MediaGrid";
 
 const AddProduct = () => {
-	// const [product, setProduct] = useState({
-	// 	title: "",
-	// 	description: "",
-	// 	price: "",
-	// 	compareAtPrice: "",
-	// 	sku: "",
-	// 	inventory: "",
-	// 	productType: "",
-	// 	vendor: "",
-	// 	tags: "",
-	// 	shopLink: "",
-	// 	status: "active",
-	// 	image: null
-	// });
+	const [product, setProduct] = useState({
+		title: "",
+		description: "",
+		price: "",
+		compareAtPrice: "",
+		sku: "",
+		barcode: "",
+		inventory: "",
+		vendor: "",
+		weight: "",
+		profit: "",
+		margin: "",
+		costPerItem: "",
+		weightUnit: "",
+		productType: "",
+		tags: "",
+		shopLink: "",
+		status: "Active",
+		image: [],
+		shopName: "",
+		shopToken: "",
+		quantity: "",
+	});
 
-	// const handleChange = (field, value) => {
-	// 	setProduct({ ...product, [field]: value });
-	// };
+
+	const handleChange = useCallback((field, value) => {
+		setProduct({ ...product, [field]: value });
+	}, [product]);
 
 	// const handleFileChange = (e) => {
 	// 	setProduct({ ...product, image: e.target.files[0] });
 	// };
 
-	// const handleSubmit = (e) => {
-	// 	e.preventDefault();
-	// 	console.log("Product Submitted:", product);
-	// };
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		alert("Product Submitted:", product);
+	};
 
 	return (
 		// <Page
@@ -200,7 +210,7 @@ const AddProduct = () => {
 
 		<Page
 			title="Add Products"
-			primaryAction={<Button variant="primary" onClick={() => alert('Open Popover')}>Save</Button>}
+			primaryAction={<Button variant="primary" onClick={(e) => handleSubmit(e)}>Save</Button>}
 			fullWidth
 		>
 
@@ -209,11 +219,15 @@ const AddProduct = () => {
 					<BlockStack gap="400">
 						<Card>
 							<BlockStack gap="400">
-								<TextField placeholder="Short sleeve t-shirt" label="Title" />
+								<TextField placeholder="Short sleeve t-shirt" label="Title"
+									value={product.title} onChange={(value) => handleChange("title", value)}
+								/>
 
 								<RichTextEditor
 
 									label="Description"
+									value={product.description}
+									onChange={(value) => handleChange("description", value)}
 									modules={{
 										toolbar: [
 											[{ header: [1, 2, 3, 4, false] }],
@@ -235,15 +249,15 @@ const AddProduct = () => {
 							</BlockStack>
 						</Card>
 
-						<Box borderRadius="300" background="bg-surface">
+						<Box shadow="200" borderRadius="300" background="bg-surface">
 							<Box padding="400">
 								<BlockStack gap="400">
 									{/* <Box background="bg-surface"> */}
 									<BlockStack gap="200">
 										<Text variant="bodyLg" fontWeight="bold">Pricing</Text>
 										<InlineStack gap="400">
-											<TextField placeholder="Rs. 0.00" label="Price" />
-											<TextField placeholder="Rs. 0.00" label="Compare-at price" />
+											<TextField type="number" value={product.price} onChange={(value) => handleChange("price", value)} placeholder="Rs. 0.00" label="Price" />
+											<TextField type="number" value={product.compareAtPrice} onChange={(value) => handleChange("compareAtPrice", value)} placeholder="Rs. 0.00" label="Compare-at price" />
 										</InlineStack>
 										<Checkbox
 											label="Charge tax on this product"
@@ -260,20 +274,79 @@ const AddProduct = () => {
 							{/* box 2 */}
 							<Box padding="400">
 								<InlineStack align="space-between">
-									<TextField placeholder="Rs. 0.00" label="Cost per item" />
-									<TextField placeholder="Rs. 0.00" label="Profit" />
-									<TextField placeholder="Rs. 0.00" label="Margin" />
+									<TextField type="number" value={product.costPerItem} onChange={(value) => handleChange("costPerItem", value)} placeholder="Rs. 0.00" label="Cost per item" />
+									<TextField type="number" value={product.profit} onChange={(value) => handleChange("profit", value)} placeholder="Rs. 0.00" label="Profit" />
+									<TextField type="number" value={product.margin} onChange={(value) => handleChange("margin", value)} placeholder="Rs. 0.00" label="Margin" />
 								</InlineStack>
 							</Box>
 						</Box>
+
+						<Card>
+							<BlockStack gap="400">
+								<Text variant="bodyLg" fontWeight="bold">Inventory</Text>
+								<InlineStack align="start">
+									<TextField value={product.quantity} onChange={(value) => handleChange("quantity", value)} type="number" label="Quantity" />
+								</InlineStack>
+
+								<InlineStack gap="400">
+									<TextField value={product.sku} onChange={(value) => handleChange("sku", value)} label="SKU (Stock Keeping Unit)" />
+									<TextField value={product.barcode} onChange={(value) => handleChange("barcode", value)} label="Barcode" />
+								</InlineStack>
+							</BlockStack>
+						</Card>
+
+
+						<Card>
+							<BlockStack gap="400">
+								<Text variant="bodyLg" fontWeight="bold">Shipping</Text>
+								<Checkbox label="This is a physical product" />
+								<InlineStack align="start">
+									<TextField type="number" value={product.weight} onChange={(value) => handleChange("weight", value)} labelHidden placeholder="0.0g" label="Weight" connectedRight={
+										<Select
+											label="Unit of weight"
+											labelHidden
+											options={['kg', 'g', 'lb']}
+											onChange={(value) => handleChange("weightUnit", value)}
+											value={product.weightUnit}
+										/>
+									} />
+								</InlineStack>
+							</BlockStack>
+						</Card>
 					</BlockStack>
 
 				</Layout.Section>
 
 				<Layout.Section variant="oneThird">
-					<Card>
+					<BlockStack gap="400">
+						<Card>
+							<BlockStack gap="200">
+								<Text variant="bodyLg" fontWeight="bold">Status</Text>
+								<Select
+									labelHidden
+									value={product.status}
+									options={['Active', 'Draft']}
+									onChange={(value) => handleChange("status", value)}
+								/>
+							</BlockStack>
+						</Card>
 
-					</Card>
+						<Card>
+							<BlockStack gap="400">
+								<Text variant="bodyLg" fontWeight="bold">Product Organization</Text>
+								<TextField value={product.productType} onChange={(value) => handleChange("type", value)} label="Type" />
+								<TextField value={product.tags} onChange={(value) => handleChange("tags", value)} label="Tags" />
+							</BlockStack>
+						</Card>
+
+						<Card>
+							<BlockStack gap="400">
+								<Text variant="bodyLg" fontWeight="bold">Shop Details</Text>
+								<TextField value={product.shopName} onChange={(value) => handleChange("shopName", value)} label="Shop URL" />
+								<TextField value={product.shopToken} onChange={(value) => handleChange("shopToken", value)} label="Shop Access Token" />
+							</BlockStack>
+						</Card>
+					</BlockStack>
 				</Layout.Section>
 			</Layout>
 

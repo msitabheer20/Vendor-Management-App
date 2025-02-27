@@ -5,18 +5,18 @@ import "./sidebar.css";
 const Sidebar = ({ fn, isOpen, setIsOpen }) => {
   const location = useLocation();
 
-  const handleMouseEnter = () => setIsOpen(true);
-  const handleMouseLeave = () => setIsOpen(false);
+  // const handleMouseEnter = () => setIsOpen(true);
+  // const handleMouseLeave = () => setIsOpen(false);
 
   return (
     <div
       className={`sidebar ${isOpen ? "more-width" : "less-width"}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      // onMouseEnter={handleMouseEnter}
+      // onMouseLeave={handleMouseLeave}
     >
-      {/* <button onClick={fn} className="sidebar-toggle-btn">
+      <button onClick={fn} className="sidebar-toggle-btn">
         {isOpen ? "←" : "→"}
-      </button> */}
+      </button>
       <nav>
         <ul
           className={`sidebar-menu overflow-hidden transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0"
