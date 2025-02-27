@@ -89,7 +89,7 @@ const Signin = () => {
                                 <TextField label="Email" type="email" value={formData.email} onChange={handleChange("email")} autoComplete="email" required />
                                 <TextField label="Password" type="password" value={formData.password} onChange={handleChange("password")} autoComplete="current-password" required />
                                 <Text as="p">
-                                    <Link to="/signup">Don't have an account? Sign up here</Link>
+                                    <Link to="/signup">Don&apos;t have an account? Sign up here</Link>
                                 </Text>
                                 <Button submit primary>Login</Button>
                             </FormLayout>

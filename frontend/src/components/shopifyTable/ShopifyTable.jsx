@@ -176,8 +176,8 @@ const ShopifyTable = () => {
     const rows = stores.map((store, index) => [
         store.storeName,
         store.shopLink,
-        <span className="masked" title={store.accessToken}>{"•".repeat(12)}</span>,
-        <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+        <span key={index} className="masked" title={store.accessToken}>{"•".repeat(12)}</span>,
+        <div key={index} style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
             <Button size="slim" onClick={() => handleCopy(store.accessToken, index)}>
                 {copiedIndex === index ? "Copied!" : "Copy"}
             </Button>
@@ -187,7 +187,6 @@ const ShopifyTable = () => {
     ]);
 
     return (
-        <Page title="Manage Shopify Stores">
             <Layout>
                 <Layout.Section>
                     <Card sectioned>
@@ -209,7 +208,6 @@ const ShopifyTable = () => {
                     </Card>
                 </Layout.Section>
             </Layout>
-        </Page>
     );
 };
 

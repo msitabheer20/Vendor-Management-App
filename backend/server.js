@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import storeRoutes from "./routes/storeRoutes.js";
 import vendorAuthRoute from "./routes/vendorAuthRoutes.js";
 import vendorRoutes from "./routes/vendorRoutes.js";
+import shopRoutes from "./routes/shopRoutes.js"
+import productRoutes from "./routes/productRoutes.js"
 
 
 dotenv.config();
@@ -26,6 +28,9 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use("/api/stores", storeRoutes);
 app.use("/api/auth/vendor", vendorAuthRoute);
 app.use("/api/vendor", vendorRoutes);
+app.use("/api/shop", shopRoutes);
+app.use("/api/products", productRoutes);
+
 
 
 const PORT = process.env.PORT || 5000;

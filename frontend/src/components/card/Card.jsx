@@ -1,14 +1,19 @@
 import { Card, Text } from "@shopify/polaris";
-import "./card.css"; // Ensure this is correctly imported
+import PropTypes from "prop-types"
+import "./card.css";
 
-const PolarisCard = () => {
+const PolarisCard = ({title}) => {
     return (
         <div className="card-item">
             <Card sectioned>
-                <Text variant="headingMd" as="p">This is a card</Text>
+                <Text variant="headingMd" as="p">{title}</Text>
             </Card>
         </div>
     );
 };
+
+PolarisCard.propTypes = {
+    title : PropTypes.string.isRequired,
+}
 
 export default PolarisCard;

@@ -10,7 +10,7 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
 
   return (
     <div
-      className={`sidebar ${isOpen? "more-width" : "less-width"}`}
+      className={`sidebar ${isOpen ? "more-width" : "less-width"}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -19,9 +19,8 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
       </button> */}
       <nav>
         <ul
-          className={`sidebar-menu overflow-hidden transition-all duration-300 ${
-            isOpen ? "opacity-100" : "opacity-0"
-          }`}
+          className={`sidebar-menu overflow-hidden transition-all duration-300 ${isOpen ? "opacity-100" : "opacity-0"
+            }`}
         >
           <div>
             <li>
@@ -35,9 +34,8 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
             <li>
               <Link
                 to="/addNewProduct"
-                className={`sidebar-link ${
-                  location.pathname === "/addNewProduct" ? "active" : ""
-                }`}
+                className={`sidebar-link ${location.pathname === "/addNewProduct" ? "active" : ""
+                  }`}
               >
                 Add New Product
               </Link>
@@ -45,9 +43,8 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
             <li>
               <Link
                 to="/products"
-                className={`sidebar-link ${
-                  location.pathname === "/products" ? "active" : ""
-                }`}
+                className={`sidebar-link ${location.pathname === "/products" ? "active" : ""
+                  }`}
               >
                 Products
               </Link>
@@ -55,9 +52,8 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
             <li>
               <Link
                 to="/inventory"
-                className={`sidebar-link ${
-                  location.pathname === "/inventory" ? "active" : ""
-                }`}
+                className={`sidebar-link ${location.pathname === "/inventory" ? "active" : ""
+                  }`}
               >
                 Manage Inventory
               </Link>
@@ -65,9 +61,8 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
             <li>
               <Link
                 to="/profile"
-                className={`sidebar-link ${
-                  location.pathname === "/profile" ? "active" : ""
-                }`}
+                className={`sidebar-link ${location.pathname === "/profile" ? "active" : ""
+                  }`}
               >
                 Profile
               </Link>
@@ -81,8 +76,8 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
 
 Sidebar.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-    fn: PropTypes.func.isRequired,
-    setIsOpen: PropTypes.func.isRequired,
+  fn: PropTypes.func.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

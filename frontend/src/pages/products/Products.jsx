@@ -2,6 +2,7 @@ import axios from "axios";
 import ShopCard from "../../components/shopCard/ShopCard"
 import "./product.css"
 import { useEffect, useState } from "react";
+import { Page, Badge } from "@shopify/polaris"
 
 const API_URL = "http://localhost:5000/api/stores";
 
@@ -20,13 +21,28 @@ const Products = () => {
 
     return (
         <>
-            <div className="product-container">
-            {
-                stores?.map((store, index) => (
-                    <ShopCard key={index} />
-                ))
-            }
-            </div>
+            <Page
+                title="Stores"
+                titleMetadata={<Badge tone="success">Paid</Badge>}
+                subtitle="Search products in stores"
+                compactTitle
+                
+
+                secondaryActions={[
+                    {
+                        content: 'View on your store',
+                        onAction: () => alert('View on your store action'),
+                    },
+                ]}
+            >
+                <div className="product-container">
+                    {
+                        stores?.map((store) => (
+                            <ShopCard key={store._id} id={store._id} url={store.shopLink} token={store.accessToken} />
+                        ))
+                    }
+                </div>
+            </Page>
         </>
     )
 }
