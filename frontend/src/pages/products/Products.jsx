@@ -19,7 +19,6 @@ const Products = () => {
 
     const fetchStores = async () => {
         const res = await axios.get(API_URL);
-        console.log(res.data)
         setStores(res.data);
     };
 

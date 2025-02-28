@@ -33,8 +33,8 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
             </li>
             <li>
               <Link
-                to="/addNewProduct"
-                className={`sidebar-link ${location.pathname === "/addNewProduct" ? "active" : ""
+                to="/addNew"
+                className={`sidebar-link ${location.pathname === "/addNew" ? "active" : ""
                   }`}
               >
                 Add New Product
@@ -55,7 +55,7 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
                 className={`sidebar-link ${location.pathname === "/inventory" ? "active" : ""
                   }`}
               >
-                Manage Inventory
+                Manage Product
               </Link>
             </li>
             <li>

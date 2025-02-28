@@ -80,7 +80,7 @@ const Signin = () => {
 
     return (
         <AppProvider>
-            <Page narrowWidth>
+            <Page fullWidth>
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh" }}>
                     <Card sectioned style={{ maxWidth: "400px", width: "100%" }}>
                         <Text variant="headingMd" alignment="center" as="h2">Vendor Login</Text>

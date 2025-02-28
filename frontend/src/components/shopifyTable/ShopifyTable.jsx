@@ -121,6 +121,7 @@
 
 import { useEffect, useState } from "react";
 import { Button, Card, DataTable, InlineStack, Layout, Page, Text, TextField } from "@shopify/polaris";
+import {PlusIcon} from "@shopify/polaris-icons"
 import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/stores";
@@ -190,11 +191,11 @@ const ShopifyTable = () => {
             <Layout>
                 <Layout.Section>
                     <Card sectioned>
-                        <InlineStack align="space-around">
-                            <TextField label="Shopify Store Name" value={storeName} onChange={setStoreName} autoComplete="off" />
-                            <TextField label="Shopify Shop Link" value={shopLink} onChange={setShopLink} autoComplete="off" />
-                            <TextField label="Shopify Access Token" value={accessToken} onChange={setAccessToken} type="password" autoComplete="off" />
-                            <Button variant="primary" onClick={handleAddStore}>{editId ? "Update Store" : "Add Store"}</Button>
+                    <InlineStack align="space-around">
+                            <TextField placeholder="Shopify Store Name" value={storeName} onChange={setStoreName} autoComplete="off" />
+                            <TextField placeholder="Shopify Shop Link" value={shopLink} onChange={setShopLink} autoComplete="off" />
+                            <TextField placeholder="Shopify Access Token" value={accessToken} onChange={setAccessToken} type="password" autoComplete="off" />
+                            <Button icon={PlusIcon} variant="primary" onClick={handleAddStore}>{editId ? "Update Store" : "Add Store"}</Button>
                         </InlineStack>
                     </Card>
 

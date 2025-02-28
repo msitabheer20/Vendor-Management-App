@@ -31,7 +31,7 @@ const AppRoutes = () => {
 					{/* Protected Routes (Require Login) */}
 					<Route path="/" element={<Layout />}>
 						<Route index element={<ProtectedRoute element={<Dashboard />} />} />
-						<Route path="/addNewProduct" element={<ProtectedRoute element={<AddProduct />} />} />
+						<Route path="/addNew" element={<ProtectedRoute element={<AddProduct />} />} />
 						<Route path="/products" element={<ProtectedRoute element={<Products />} />} />
 						<Route path="/product/:id" element={<ProtectedRoute element={<ProductDetails />} />} />
 						<Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />

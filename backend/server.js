@@ -7,20 +7,19 @@ import vendorAuthRoute from "./routes/vendorAuthRoutes.js";
 import vendorRoutes from "./routes/vendorRoutes.js";
 import shopRoutes from "./routes/shopRoutes.js"
 import productRoutes from "./routes/productRoutes.js"
-
+import bodyParser from "body-parser";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json({ limit: '50mb'}))
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true}))
 
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => console.error(err));
 

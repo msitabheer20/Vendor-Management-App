@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import "./profile.css";
 import { useNavigate } from "react-router-dom";
-import { Page, Badge, Button, Box, InlineStack, Text, Thumbnail, Image, BlockStack } from "@shopify/polaris"
+import { Page, Badge, Button, Box, InlineStack, Text, Image, BlockStack } from "@shopify/polaris"
 import VendorContext from "../../context/VendorContext";
 
 const Profile = () => {
@@ -39,8 +39,8 @@ const Profile = () => {
                 </InlineStack>
                 <Box className="profile-details">
                     <BlockStack gap="400">
-                        <Text variant="heading3xl" fontWeight="bold">name{vendor?.name.toUpperCase()}</Text>
-                        <Text variant="bodySm">emial{vendor?.email}</Text>
+                        <Text variant="heading3xl" fontWeight="bold">{vendor?.name.toUpperCase()}</Text>
+                        <Text variant="bodySm">email: {vendor?.email}</Text>
                         <Text variant="bodyLg">Experienced vendor specializing in handmade beauty products. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor culpa sint consequatur quibusdam, ducimus facilis aliquam perspiciatis sequi, obcaecati officia voluptatum doloribus asperiores. Aspernatur, quibusdam sit harum odit dolores architecto suscipit explicabo nostrum ullam earum. Ad eaque pariatur nemo. Repudiandae, architecto. Ex voluptates quae aliquam nisi, quos, consectetur eveniet repudiandae ratione soluta iure laudantium qui asperiores hic error quis expedita veniam animi doloremque quisquam ipsum aperiam! Possimus eveniet perferendis voluptates architecto laudantium. Sint explicabo harum necessitatibus iusto dolor aliquam cum sapiente. Quisquam quia officia eaque? Ut ducimus expedita assumenda labore explicabo dolorem aliquam, recusandae dolore quasi, necessitatibus obcaecati atque quae!</Text>
                     </BlockStack>
                     {/* <h3 className="vendor-name">helo{vendor?.name}</h3> */}

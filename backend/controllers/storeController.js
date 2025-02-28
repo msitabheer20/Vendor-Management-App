@@ -23,9 +23,6 @@ export const saveStore = async (req, res) => {
         } else {
             // Create new store
             const newStore = new Store({ storeName, shopLink, accessToken });
-            console.log(newStore);
-
-            
 
             await newStore.save();
             res.json({ message: "Store added successfully" });

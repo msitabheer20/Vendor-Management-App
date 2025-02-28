@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Badge, Page, Card, Text, Box, Image } from "@shopify/polaris";
 import { useContext } from "react";
@@ -11,8 +11,11 @@ const ProductDetails = () => {
 	const vendorName = vendor?.name;
 
 	const { id } = useParams(); // Get the ID from the route
+	const navigate = useNavigate();
 	const location = useLocation();
-	const { url, token } = location.state || {}; // Get URL & token from state
+	const { url, token } = location.state || {}; 
+
+	
 
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -30,7 +33,7 @@ const ProductDetails = () => {
 				const response = await axios.get(`http://localhost:5000/api/products`, {
 					params: { vendorName, url, token },
 				});
-				console.log("from productDetails.jsx : ", response.data);
+
 				setProducts(response.data.products);
 			} catch (err) {
 				setError("Failed to fetch products");
@@ -45,9 +48,10 @@ const ProductDetails = () => {
 		<Page
 			title="Product Details"
 			compactTitle
-			primaryAction={{ content: 'Add Product',  onAction: () => alert("Hello")}}
+			fullWidth
+			primaryAction={{ content: 'Add Product',  onAction: () => navigate("/addNew", {state: {url, token}})}}
 		>
-			{/* page added */}
+
 			<Card>
 				<Box padding="200">
 					<Text as="h1" variant="headingLg">Shop ID: {id}</Text>
@@ -78,7 +82,6 @@ const ProductDetails = () => {
 				)}
 			</Card>
 
-			{/* page ends */}
 		</Page>
 	);
 };

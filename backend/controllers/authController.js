@@ -33,7 +33,6 @@ export const handleSignin = async (req, res) => {
         const isMatch = await bcrypt.compare(password, vendor.password);
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-        // console.log("JWT_SECRET:", process.env.JWT_SECRET);
         const token = jwt.sign({ id: vendor._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
         res.json({
             token,

@@ -1,6 +1,5 @@
-import Card from "../../components/card/Card";
 import ShopifyTable from "../../components/shopifyTable/ShopifyTable";
-import { Badge, InlineStack, Page } from "@shopify/polaris"
+import { BlockStack, Grid, Layout, LegacyCard, Page } from "@shopify/polaris"
 
 const Dashboard = () => {
 
@@ -20,16 +19,30 @@ const Dashboard = () => {
 					},
 				]}
 			>
-				<div>
+				<Layout>
+					<BlockStack gap="2400">
 
-					<div style={{ display: 'flex', gap: "50px", flexWrap: 'wrap', justifyContent: "space-around" }}>
-						<Card title="Number of Shops:" />
-						<Card title="Number of Products:" />
-						<Card title="Created At:" />
-					</div>
+						<Grid>
+							<Grid.Cell columnSpan={{ xs: 6, sm: 4, md: 4, lg: 4, xl: 4 }}>
+								<LegacyCard title="Sales" sectioned>
+									<p>View a summary of your online store’s sales.</p>
+								</LegacyCard>
+							</Grid.Cell>
+							<Grid.Cell columnSpan={{ xs: 6, sm: 4, md: 4, lg: 4, xl: 4 }}>
+								<LegacyCard title="Orders" sectioned>
+									<p>View a summary of your online store’s orders.</p>
+								</LegacyCard>
+							</Grid.Cell>
+							<Grid.Cell columnSpan={{ xs: 6, sm: 4, md: 4, lg: 4, xl: 4 }}>
+								<LegacyCard title="Customers" sectioned>
+									<p>View a summary of your online store’s customers.</p>
+								</LegacyCard>
+							</Grid.Cell>
+						</Grid>
 
-					<ShopifyTable />
-				</div>
+						<ShopifyTable />
+					</BlockStack>
+				</Layout>
 			</Page >
 		</>
 	)

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Shopify from 'shopify-api-node';
 
 export const getProducts = async (req, res) => {
     const { vendorName, url, token } = req.query;
@@ -26,7 +27,7 @@ export const createProduct = async (req, res) => {
     try {
         const { shopName, shopToken, ...productDetails } = req.body;
 
-        const SHOPIFY_API_URL = `https://${shopName}.myshopify.com/admin/api/2025-01/products.json`;
+        const SHOPIFY_API_URL = `https://${shopName}/admin/api/2025-01/products.json`;
 
         const productData = {
             product: {
@@ -35,6 +36,7 @@ export const createProduct = async (req, res) => {
                 vendor: productDetails.vendor,
                 product_type: productDetails.productType,
                 tags: productDetails.tags,
+                category: productDetails.category,
                 variants: [
                     {
                         price: productDetails.price,

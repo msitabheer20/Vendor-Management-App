@@ -1,10 +1,14 @@
+import { Page } from "@shopify/polaris"
 
 
 const Inventory = () => {
   return (
-    <div>
-      Inventory
-    </div>
+    <Page
+      title="Manage Inventory"
+      fullWidth
+    >
+
+    </Page>
   )
 }
 
