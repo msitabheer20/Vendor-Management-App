@@ -23,6 +23,31 @@ export const getProducts = async (req, res) => {
     }
 }
 
+export const getSingleProduct = async (req, res) => {
+    const { url, token } = req.query;
+    const { productId } = req.params;
+    const API_URL = `https://${url}/admin/api/2025-01/products/${productId}.json`
+    if (!url || !token) {
+        return res.status(400).json({ error: "Missing URL or token" });
+    }
+
+    try {
+        const response = await axios.get(API_URL,
+            {
+                headers: {
+                    "X-Shopify-Access-Token": token,
+                    "Content-Type": "application/json",
+                }
+            }
+        )
+
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error("Error fetching products data:", error.response?.data || error.message);
+        res.status(500).json({ error: "Failed to fetch products data" });
+    }
+}
+
 export const createProduct = async (req, res) => {
     try {
         const { shopName, shopToken, ...productDetails } = req.body;
@@ -75,5 +100,51 @@ export const createProduct = async (req, res) => {
                 error: error.message,
             });
         }
+    }
+}
+
+export const getProductImages = async (req, res) => {
+    const { url, token } = req.query;
+    const { productId } = req.params;
+    const API_URL = `https://${url}/admin/api/2025-01/products/${productId}/images.json`;
+
+    if (!url || !token) {
+        return res.status(400).json({ error: "Missing URL or token" });
+    }
+
+    try {
+        const response = await axios.get(API_URL,
+            {
+                headers: {
+                    "X-Shopify-Access-Token": token,
+                    "Content-Type": "application/json",
+                }
+            }
+        )
+
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error("Error fetching products data:", error.response?.data || error.message);
+        res.status(500).json({ error: "Failed to fetch product images data" });
+    }
+}
+
+export const deleteProduct = async (req, res) => {
+    const { productId } = req.params;
+    const { url, token } = req.query;
+
+    const API_URL = `https://${url}/admin/api/2025-01/products/${productId}.json`
+
+    try {
+        const response = await axios.delete(API_URL, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Shopify-Access-Token': token,
+            },
+        })
+
+        res.json({ message: "Product deleted successfully", data: response.data });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to delete product", error: error.message })
     }
 }

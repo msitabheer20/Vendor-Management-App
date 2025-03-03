@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import { VendorProvider } from "../context/VendorContextProvider";
 import ProductDetails from "../pages/productDetails/productDetails";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import SingleProduct from "../pages/singleProduct/SingleProduct";
 
 const isAuthenticated = () => {
 	return localStorage.getItem("token") !== null;
@@ -34,6 +35,7 @@ const AppRoutes = () => {
 						<Route path="/addNew" element={<ProtectedRoute element={<AddProduct />} />} />
 						<Route path="/products" element={<ProtectedRoute element={<Products />} />} />
 						<Route path="/product/:id" element={<ProtectedRoute element={<ProductDetails />} />} />
+						<Route path="/product/:id/:productId" element={<ProtectedRoute element={<SingleProduct />} />} />
 						<Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
 						<Route path="/profile" element={<ProtectedRoute element={<Profile />} />}/>
 					</Route>

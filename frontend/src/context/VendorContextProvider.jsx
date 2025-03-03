@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types'
 import axios from "axios";
-import VendorContext from "./VendorContext";
+import VendorContext from './VendorContext'
 
 export const VendorProvider = ({ children }) => {
   const [vendor, setVendor] = useState(null);
@@ -10,16 +10,22 @@ export const VendorProvider = ({ children }) => {
   useEffect(() => {
     const fetchVendor = async () => {
       try {
-        const token = localStorage.getItem("token");  // ✅ Token leke API call karo
-        if (!token) return;
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setLoading(false);
+          return;
+        }
 
-        const res = await axios.get("http://localhost:5000/api/vendors/", {
+        // console.log("Fetching vendor with token:", token);
+
+        const res = await axios.get("http://localhost:5000/api/vendor/", {
           headers: { Authorization: `Bearer ${token}` }
         });
-        // console.log("VendorContext.jsx", res);
+        
+        ("Fetched vendor data:", res.data);
         setVendor(res.data);
       } catch (error) {
-        console.error("Error fetching vendor:", error);
+        console.error("Error fetching vendor:", error.response?.data || error);
       } finally {
         setLoading(false);
       }
@@ -30,11 +36,12 @@ export const VendorProvider = ({ children }) => {
 
 
   const updateVendor = (vendorData) => {
+    // console.log("Updating vendor:", vendorData);
     setVendor(vendorData);
   };
 
   return (
-    <VendorContext.Provider value={{ vendor, updateVendor }}>
+    <VendorContext.Provider value={{ vendor, updateVendor, loading }}>
       {children}
     </VendorContext.Provider>
   );

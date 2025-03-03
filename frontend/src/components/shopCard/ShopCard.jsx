@@ -1,9 +1,8 @@
 import { Card, Text, Button, Box } from "@shopify/polaris";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useState } from "react";
 
 const fetchShopData = async ({ queryKey }) => {
 	const [, id, url, token] = queryKey;
@@ -15,54 +14,24 @@ const fetchShopData = async ({ queryKey }) => {
 
 const ShopCard = ({ id, url, token }) => {
 
-	// const [shopData, setShopData] = useState(null);
-	// const [loading, setLoading] = useState(false);
-	// const [error, setError] = useState(null);
-
 	const navigate = useNavigate();
-	// const location = useLocation();
 
-	// useEffect(() => {
-
-	// 	if (location.state?.shopData) {
-	// 		setShopData(location.state.shopData);
-	// 		return;
-	// 	}
-	// 	console.log("fetching products....")
-
-	// 	const fetchShopData = async () => {
-	// 		setLoading(true);
-	// 		try {
-	// 			const response = await axios.get(`http://localhost:5000/api/shop/`, {
-	// 				params: { url, token },
-	// 			});
-	// 			console.log("from ShopCard.jsx", response.data);
-	// 			setShopData(response.data.shop);
-	// 		} catch (err) {
-	// 			setError("Failed to load shop data");
-	// 		}
-	// 		setLoading(false);
-	// 	};
-
-	// 	fetchShopData();
-	// }, [location.state, url, token]);
-
-	const { data: shopData, isLoading, error } = useQuery({
+	const { data: shopData, isPending, isError } = useQuery({
 		queryKey: ["shopData", id, url, token],
 		queryFn: fetchShopData,
 		staleTime: 1000 * 60 * 5
 	})
 
 	const handleViewProducts = () => {
-		navigate(`/product/${shopData.id}`, { state: { url, token } }); // Pass data to new page
+		navigate(`/product/${shopData.id}`, { state: { url, token } });
 	};
 
-	if (isLoading) {
+	if (isPending) {
 		return <Text as="p" variant="bodyMd">Loading...</Text>
 	}
 
-	if (error) {
-		return <Text as="p" variant="bodyMd" color="critical">{error}</Text>
+	if (isError) {
+		return <Text as="p" variant="bodyMd" color="critical">Shop unavailable</Text>
 	}
 
 	return (

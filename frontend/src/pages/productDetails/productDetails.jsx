@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Badge, Page, Card, Text, Box, Image } from "@shopify/polaris";
+import { Page, Card, Text, Box, InlineStack, Button } from "@shopify/polaris";
+import { DeleteIcon } from '@shopify/polaris-icons';
 import { useContext } from "react";
 import VendorContext from "../../context/VendorContext";
 
@@ -13,9 +14,9 @@ const ProductDetails = () => {
 	const { id } = useParams(); // Get the ID from the route
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { url, token } = location.state || {}; 
+	const { url, token } = location.state || {};
 
-	
+
 
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -44,12 +45,32 @@ const ProductDetails = () => {
 		fetchProducts();
 	}, [vendorName, url, token]);
 
+	// console.log(products);
+
+	const handleProductClick = (productId, name) => {
+		navigate(`/product/${id}/${productId}`, { state: { url, token, name } });
+	}
+
+	const handleProductDelete = async(productId) => {
+		try {
+			const response = await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+				params: { url, token },
+			});
+
+			alert("Product deleted");
+			setProducts(products.filter((product) => product.id !== productId))
+
+		} catch (err) {
+			alert("Failed to delete product");
+		}
+	}
+
 	return (
 		<Page
 			title="Product Details"
 			compactTitle
 			fullWidth
-			primaryAction={{ content: 'Add Product',  onAction: () => navigate("/addNew", {state: {url, token}})}}
+			primaryAction={{ content: 'Add Product', onAction: () => navigate("/addNew", { state: { url, token } }) }}
 		>
 
 			<Card>
@@ -72,6 +93,10 @@ const ProductDetails = () => {
 										{product.image && product.image.src && (
 											<img src={product.image.src} alt={product.title} style={{ width: "150px", height: "150px", objectFit: "contain", marginTop: "10px" }} />
 										)}
+										<InlineStack align="space-between">
+											<Button onClick={()=>handleProductDelete(product.id)} icon={DeleteIcon} variant="primary" tone="critical">Delete</Button>
+											<Button onClick={() => handleProductClick(product.id, product.title)}>View More</Button>
+										</InlineStack>
 									</div>
 								))}
 							</div>

@@ -43,7 +43,7 @@ const AddProduct = () => {
 		setProduct({ ...product, [field]: value });
 	}, [product]);
 
-	const handleSubmit = async(e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			const res = await axios.post("http://localhost:5000/api/products/new", JSON.stringify(product),
@@ -66,64 +66,64 @@ const AddProduct = () => {
 	const hasError = rejectedFiles.length > 0;
 
 	const handleDrop = useCallback(async (_droppedFiles, acceptedFiles, rejectedFiles) => {
-    setFiles((files) => [...files, ...acceptedFiles]);
-    setRejectedFiles(rejectedFiles);
-  
-    const base64Images = await Promise.all(acceptedFiles.map(async(file) => {
-      const base64Image = await fileToBase64(file);
-      return { attachment: base64Image };
+		setFiles((files) => [...files, ...acceptedFiles]);
+		setRejectedFiles(rejectedFiles);
+
+		const base64Images = await Promise.all(acceptedFiles.map(async (file) => {
+			const base64Image = await fileToBase64(file);
+			return { attachment: base64Image };
 		}));
-		
+
 		handleChange("images", base64Images);
-  }, [handleChange]);
+	}, [handleChange]);
 
 
-  const fileToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result.split(',')[1]); // Extract Base64 without metadata
-      reader.onerror = (error) => reject(error);
-    });
-  };
+	const fileToBase64 = (file) => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => resolve(reader.result.split(',')[1]); // Extract Base64 without metadata
+			reader.onerror = (error) => reject(error);
+		});
+	};
 
 	const fileUpload = !files.length && <DropZone.FileUpload />;
-  const uploadedFiles = files.length > 0 && (
-    <LegacyStack vertical>
-      {files.map((file, index) => (
-        <LegacyStack alignment="center" key={index}>
-          <Thumbnail
-            size="small"
-            alt={file.name}
-            source={window.URL.createObjectURL(file)}
-          />
-          <div>
-            {file.name}{' '}
-            <Text variant="bodySm" as="p">
-              {file.size} bytes
-            </Text>
-          </div>
-        </LegacyStack>
-      ))}
-    </LegacyStack>
+	const uploadedFiles = files.length > 0 && (
+		<LegacyStack vertical>
+			{files.map((file, index) => (
+				<LegacyStack alignment="center" key={index}>
+					<Thumbnail
+						size="small"
+						alt={file.name}
+						source={window.URL.createObjectURL(file)}
+					/>
+					<div>
+						{file.name}{' '}
+						<Text variant="bodySm" as="p">
+							{file.size} bytes
+						</Text>
+					</div>
+				</LegacyStack>
+			))}
+		</LegacyStack>
 	);
-	
-	const errorMessage = hasError && (
-    <Banner title="The following images couldn&apos;t be uploaded:" tone="critical">
-			<List type="bullet">
-        {rejectedFiles.map((file, index) => (
-          <List.Item key={index}>
-            {`"${file.name}" is not supported. File type must be .gif, .jpg, .png or .svg.`}
-          </List.Item>
-        ))}
-      </List>
-    </Banner>
-  );
 
-// ///////Image adding logic ends /////////////////////////
+	const errorMessage = hasError && (
+		<Banner title="The following images couldn&apos;t be uploaded:" tone="critical">
+			<List type="bullet">
+				{rejectedFiles.map((file, index) => (
+					<List.Item key={index}>
+						{`"${file.name}" is not supported. File type must be .gif, .jpg, .png or .svg.`}
+					</List.Item>
+				))}
+			</List>
+		</Banner>
+	);
+
+	// ///////Image adding logic ends /////////////////////////
 
 	return (
-		
+
 
 		<Page
 			title="Add Products"
@@ -164,7 +164,7 @@ const AddProduct = () => {
 								</DropZone>
 
 								<BlockStack gap="200">
-									<TextField value={product.category} onChange={(value)=>handleChange("category", value)} label="Category" />
+									<TextField value={product.category} onChange={(value) => handleChange("category", value)} label="Category" />
 									<Text variant="bodySm" fontWeight="">Determines tax rates and adds metafields to improve search, filters, and cross-channel sales</Text>
 								</BlockStack>
 							</BlockStack>
@@ -276,170 +276,3 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
-
-
-{/* <Page
-			title="Add Products"
-			titleMetadata={<Badge tone="success">Paid</Badge>}
-			subtitle="Perfect for any product"
-			compactTitle
-
-			secondaryActions={[
-				{
-					content: 'View on your store',
-					onAction: () => alert('View on your store action'),
-				},
-			]}
-			actionGroups={[
-				{
-					title: 'Promote',
-					actions: [
-						{
-							content: 'Share on Facebook',
-							accessibilityLabel: 'Individual action label',
-							onAction: () => alert('Share on Facebook action'),
-						},
-					],
-				},
-			]}
-		>
-			<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-				{/* <BlockStack style={{ maxWidth: "500px" }} align="center"> */}
-					{/* <Card sectioned style={{ maxWidth: "500px", margin: "20px auto" }}> */}
-		// 				<form onSubmit={handleSubmit} className="scrollable-form">
-		// 					<TextField label="Title" value={product.title} onChange={(value) => handleChange("title", value)} autoComplete="off" required />
-
-		// 					<TextField label="Description" value={product.description} onChange={(value) => handleChange("description", value)} multiline required />
-
-		// 					<InlineStack gap="100">
-		// 						<TextField label="Price ($)" type="number" value={product.price} onChange={(value) => handleChange("price", value)} required />
-		// 						<TextField label="Compare at Price ($)" type="number" value={product.compareAtPrice} onChange={(value) => handleChange("compareAtPrice", value)} />
-		// 						<TextField label="Inventory Quantity" type="number" value={product.inventory} onChange={(value) => handleChange("inventory", value)} required />
-		// 					</InlineStack>
-
-		// 					<InlineStack gap="100">
-		// 						<TextField label="SKU" value={product.sku} onChange={(value) => handleChange("sku", value)} />
-		// 						<TextField label="Product Type" value={product.productType} onChange={(value) => handleChange("productType", value)} required />
-		// 						<TextField label="Vendor" value={product.vendor} onChange={(value) => handleChange("vendor", value)} required />
-		// 					</InlineStack>
-
-		// 					<InlineStack gap="100">
-		// 						<TextField label="Tags (comma-separated)" value={product.tags} onChange={(value) => handleChange("tags", value)} />
-		// 						<TextField label="Shop Link" value={product.shopLink} onChange={(value) => handleChange("shopLink", value)} />
-		// 					</InlineStack>
-
-		// 					<BlockStack gap="100">
-		// 						<label>Product Image</label>
-		// 						<input type="file" name="image" accept="image/*" onChange={handleFileChange} />
-		// 					</BlockStack>
-
-		// 					<BlockStack gap="100">
-		// 						<label>Status</label>
-		// 						<select name="status" value={product.status} onChange={(e) => handleChange("status", e.target.value)}>
-		// 							<option value="active">Active</option>
-		// 							<option value="draft">Draft</option>
-		// 							<option value="archived">Archived</option>
-		// 						</select>
-		// 					</BlockStack>
-
-		// 					<Button primary submit>
-		// 						Add Product
-		// 					</Button>
-		// 				</form>
-		// 			{/* </Card> */}
-		// 		{/* </BlockStack> */}
-		// 	</div>
-// </Page> */}
-		
-
-/////////////////////////////////////////////////////////////////////////////////////////
-
-// import { useState } from "react";
-// import './addProduct.css'
-
-// const AddProduct = () => {
-//     const [product, setProduct] = useState({
-//         title: "",
-//         description: "",
-//         price: "",
-//         compareAtPrice: "",
-//         sku: "",
-//         inventory: "",
-//         productType: "",
-//         vendor: "",
-//         tags: "",
-//         shopLink: "",
-//         status: "active",
-//         image: null
-//     });
-
-//     const handleChange = (e) => {
-//         const { name, value } = e.target;
-//         setProduct({ ...product, [name]: value });
-//     };
-
-//     const handleFileChange = (e) => {
-//         setProduct({ ...product, image: e.target.files[0] });
-//     };
-
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         console.log("Product Submitted:", product);
-//     };
-
-//     return (
-//         <div className="form-container">
-//             <form onSubmit={handleSubmit} className="scrollable-form">
-//                 <label>Title</label>
-//                 <input type="text" name="title" value={product.title} onChange={handleChange} required />
-
-//                 <label>Description</label>
-//                 <textarea name="description" value={product.description} onChange={handleChange} required />
-
-//                 <div className="price">
-//                     {/* <label>Price ($)</label> */}
-//                     <input type="number" name="price" placeholder="Price" value={product.price} onChange={handleChange} required />
-
-//                     {/* <label>Compare at Price ($)</label> */}
-//                     <input type="number" name="compareAtPrice" placeholder="Compare at Price" value={product.compareAtPrice} onChange={handleChange} />
-
-//                     {/* <label>Inventory Quantity</label> */}
-//                     <input type="number" placeholder="Inventory Quantity" name="inventory" value={product.inventory} onChange={handleChange} required />
-//                 </div>
-
-//                 <div className="sku">
-//                     {/* <label>SKU</label> */}
-//                     <input type="text" name="sku" placeholder="SKU" value={product.sku} onChange={handleChange} />
-
-//                     {/* <label>Product Type</label> */}
-//                     <input type="text" placeholder="Product Type" name="productType" value={product.productType} onChange={handleChange} required />
-
-//                     {/* <label>Vendor</label> */}
-//                     <input type="text" placeholder='Vendor' name="vendor" value={product.vendor} onChange={handleChange} required />
-//                 </div>
-
-
-//                 <div className="tag" style={{ display: "flex", gap: "10px", justifyContent: "space-between" }}>
-//                     <input style={{ flex: 1 }} placeholder="Tags (comma-separated)" type="text" name="tags" value={product.tags} onChange={handleChange} />
-//                     <input style={{ flex: 1 }} placeholder="Shop Link" type="text" name="tags" value={product.shopLink} onChange={handleChange} />
-//                 </div>
-
-//                 <div className="imageNstatus">
-//                     <label>Product Image</label>
-//                     <input type="file" name="image" accept="image/*" onChange={handleFileChange} />
-
-//                     <label>Status</label>
-//                     <select name="status" value={product.status} onChange={handleChange}>
-//                         <option value="active">Active</option>
-//                         <option value="draft">Draft</option>
-//                         <option value="archived">Archived</option>
-//                     </select>
-//                 </div>
-
-//                 <button className="form-btn" type="submit">Add Product</button>
-//             </form>
-//         </div>
-//     );
-// }
-
-// export default AddProduct
