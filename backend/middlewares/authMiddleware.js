@@ -10,9 +10,11 @@ const authMiddleware = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log("Decoded Token ID:", decoded.id); // Debugging
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+        if (err) {
+            console.error("JWT Verification Error:", err);
+            return res.status(401).json({ message: "Token Expired Please sigin again" });
+        }
 
         req.vendor = await Vendor.findById(decoded.id).select("-password");
 
@@ -21,11 +23,7 @@ const authMiddleware = async (req, res, next) => {
         }
 
         next();
-
-    } catch (error) {
-        console.error("JWT Verification Error:", error);
-        res.status(401).json({ message: "Invalid Token" });
-    }
+    });
 };
 
 export default authMiddleware;
