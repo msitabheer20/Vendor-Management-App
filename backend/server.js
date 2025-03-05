@@ -7,6 +7,7 @@ import vendorAuthRoute from "./routes/vendorAuthRoutes.js";
 import vendorRoutes from "./routes/vendorRoutes.js";
 import shopRoutes from "./routes/shopRoutes.js"
 import productRoutes from "./routes/productRoutes.js"
+import webhookRoutes from "./routes/webhookRoutes.js"
 import bodyParser from "body-parser";
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use("/api/auth/vendor", vendorAuthRoute);
 app.use("/api/vendor", vendorRoutes);
 app.use("/api/shop", shopRoutes);
 app.use("/api/products", productRoutes);
+app.use("/webhooks", webhookRoutes);
 
 
 
