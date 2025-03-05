@@ -20,7 +20,11 @@ const vendorSchema = new mongoose.Schema({
   },
   storeUrl: {
     type: String,
-    required: true
+    required: function () { return this.isAdmin; }
+  },
+  accessToken: {
+    type: String,
+    required: function () { return this.isAdmin; }
   },
   phone: {
     type: String,
@@ -30,13 +34,13 @@ const vendorSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  idAdmin: {
+  isAdmin: {
     type: Boolean,
     default: false
   },
   isApproved: {
     type: Boolean,
-    default: false
+    default: function () { return this.isAdmin; }
   },
 }, { timestamps: true });
 

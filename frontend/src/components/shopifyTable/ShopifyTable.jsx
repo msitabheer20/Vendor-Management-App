@@ -1,153 +1,46 @@
-// import { useEffect, useState } from "react";
-// import './shopifyTable.css';
-// import axios from "axios";
-
-// const API_URL = "http://localhost:5000/api/stores";
-
-// const ShopifyTable = () => {
-//     const [storeName, setStoreName] = useState("");
-//     const [accessToken, setAccessToken] = useState("");
-//     const [stores, setStores] = useState([]);
-//     const [shopLink, setShopLink] = useState("");
-//     const [editId, setEditId] = useState(null);
-//     const [copiedIndex, setCopiedIndex] = useState(null);
-
-//     useEffect(() => {
-//         fetchStores();
-//     }, []);
-
-//     const fetchStores = async () => {
-//         const res = await axios.get(API_URL);
-//         setStores(res.data);
-//     };
-
-//     const handleAddStore = async () => {
-//         if (!storeName || !accessToken) return;
-
-//         const storeData = { storeName, shopLink, accessToken, id: editId };
-
-//         await axios.post(API_URL, storeData);
-
-//         setStoreName("");
-//         setAccessToken("");
-//         setShopLink("");
-//         setEditId(null);
-//         fetchStores();
-//     };
-
-//     const handleEdit = (store) => {
-//         setStoreName(store.storeName);
-//         setAccessToken(store.accessToken);
-//         setShopLink(store.shopLink);
-//         setEditId(store._id);
-//     };
-
-//     const handleDelete = async (id) => {
-//         await axios.delete(`${API_URL}/${id}`);
-//         fetchStores();
-//     };
-
-//     const handleCopy = (token, index) => {
-//         navigator.clipboard.writeText(token);
-//         setCopiedIndex(index);
-//         setTimeout(() => setCopiedIndex(null), 1500);
-//     };
-
-//     return (
-//         <div className="table-container">
-//             <h2>Manage Shopify Stores</h2>
-
-//             <div className="table-form-container">
-//                 <input
-//                     type="text"
-//                     placeholder="Shopify Store Name"
-//                     value={storeName}
-//                     onChange={(e) => setStoreName(e.target.value)}
-//                 />
-//                 <input
-//                     type="text"
-//                     placeholder="Shopify Shop Link"
-//                     value={shopLink}
-//                     onChange={(e) => setShopLink(e.target.value)}
-//                 />
-//                 <input
-//                     type="password"
-//                     placeholder="Shopify Access Token"
-//                     value={accessToken}
-//                     onChange={(e) => setAccessToken(e.target.value)}
-//                 />
-//                 <button className="addShopifyBtn" onClick={handleAddStore}>
-//                     {editId ? "Update Store" : "Add Store"}
-//                 </button>
-//             </div>
-
-//             <table>
-//                 <thead>
-//                     <tr>
-//                         <th>Store Name</th>
-//                         <th>Shop Link</th>
-//                         <th>Access Token</th>
-//                         <th>Actions</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//                     {stores.map((store, index) => (
-//                         <tr key={store._id}>
-//                             <td>{store.storeName}</td>
-//                             <td>
-//                                 {store.shopLink}
-//                             </td>
-//                             <td>
-//                                 <span className="masked" title={store.accessToken}>
-//                                     {"•".repeat(12)}
-//                                 </span>
-//                             </td>
-//                             <td className="shopifyDetails">
-//                                 <button className="table-btn copy" onClick={() => handleCopy(store.accessToken, index)}>
-//                                     {copiedIndex === index ? "Copied!" : "Copy"}
-//                                 </button>
-//                                 <button className="table-btn edit" onClick={() => handleEdit(store)}>Edit</button>
-//                                 <button className="table-btn delete" onClick={() => handleDelete(store._id)}>Delete</button>
-//                             </td>
-//                         </tr>
-//                     ))}
-//                 </tbody>
-//             </table>
-//         </div>
-//     );
-// };
-
-// export default ShopifyTable;
-
 import { useEffect, useState } from "react";
 import { Button, Card, DataTable, InlineStack, Layout, Page, Text, TextField } from "@shopify/polaris";
-import {PlusIcon} from "@shopify/polaris-icons"
+import { PlusIcon } from "@shopify/polaris-icons"
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/stores";
+const API_URL_STORE = "http://localhost:5000/api/stores";
+const API_URL_VENDOR = "http://localhost:5000/api/vendor/pending"
 
 const ShopifyTable = () => {
+
+    const isAdmin = true;
     const [storeName, setStoreName] = useState("");
     const [accessToken, setAccessToken] = useState("");
     const [stores, setStores] = useState([]);
     const [shopLink, setShopLink] = useState("");
     const [editId, setEditId] = useState(null);
     const [copiedIndex, setCopiedIndex] = useState(null);
+    const [pendingUsers, setPendingUsers] = useState([]);
 
     useEffect(() => {
-        fetchStores();
-    }, []);
+        if (isAdmin) {
+            fetchPending();
+        } else {
+            fetchStores();
+        }
+    }, [isAdmin]);
 
     const fetchStores = async () => {
-        const res = await axios.get(API_URL);
+        const res = await axios.get(API_URL_STORE);
         setStores(res.data);
+    };
+
+    const fetchPending = async () => {
+        const res = await axios.get(API_URL_VENDOR);
+        console.log(res);
+        setPendingUsers(res.data);
     };
 
     const handleAddStore = async () => {
         if (!storeName || !accessToken) return;
 
         const storeData = { storeName, shopLink, accessToken, id: editId };
-        await axios.post(API_URL, storeData);
+        await axios.post(API_URL_STORE, storeData);
 
         setStoreName("");
         setAccessToken("");
@@ -155,6 +48,16 @@ const ShopifyTable = () => {
         setEditId(null);
         fetchStores();
     };
+
+    const handleApprove = async (id) => {
+        const response = await axios.put(`http://localhost:5000/api/vendor/pending/${id}`);
+        setPendingUsers(pendingUsers.filter(user => user._id !== id));
+    }
+
+    const handleReject = async (id) => {
+        const response = await axios.delete(`http://localhost:5000/api/vendor/pending/${id}`);
+        setPendingUsers(pendingUsers.filter(user => user._id !== id));
+    }
 
     const handleEdit = (store) => {
         setStoreName(store.storeName);
@@ -164,7 +67,7 @@ const ShopifyTable = () => {
     };
 
     const handleDelete = async (id) => {
-        await axios.delete(`${API_URL}/${id}`);
+        await axios.delete(`${API_URL_STORE}/${id}`);
         fetchStores();
     };
 
@@ -174,41 +77,56 @@ const ShopifyTable = () => {
         setTimeout(() => setCopiedIndex(null), 1500);
     };
 
-    const rows = stores.map((store, index) => [
+    console.log(pendingUsers)
+
+    const userRows = pendingUsers.map((user, index) => [
+        user.name,
+        user.email,
+        new Date(user.createdAt).toLocaleString(),
+        <InlineStack key={user.index} gap="200">
+            <Button size="slim" onClick={() => handleApprove(user._id)}>Approve</Button>
+            <Button variant="primary" tone="critical" size="slim" onClick={() => handleReject(user._id)}>Reject</Button>
+        </InlineStack>
+    ])
+
+    const userHeading = ["Vendor Name", "Vendor Email", "Request At", "Actions"]
+    const storeHeading = ["Store Name", "Shop Link", "Access Token", "Actions"]
+
+    const storeRows = stores.map((store, index) => [
         store.storeName,
         store.shopLink,
         <Text key={index} className="masked">{"•".repeat(12)}</Text>,
-        <InlineStack key={index} align="space-between">
+        <InlineStack key={index} gap="200">
             <Button size="slim" onClick={() => handleCopy(store.accessToken, index)}>
                 {copiedIndex === index ? "Copied!" : "Copy"}
             </Button>
-            <Button size="slim" onClick={() => handleEdit(store)}>Edit</Button>
-            <Button size="slim" destructive onClick={() => handleDelete(store._id)}>Delete</Button>
+            <Button variant="primary" tone="success" size="slim" onClick={() => handleEdit(store)}>Edit</Button>
+            <Button variant="primary" tone="critical" size="slim" destructive onClick={() => handleDelete(store._id)}>Delete</Button>
         </InlineStack>
     ]);
 
     return (
-            <Layout>
-                <Layout.Section>
-                    <Card sectioned>
+        <Layout>
+            <Layout.Section>
+                {!isAdmin && (<Card sectioned>
                     <InlineStack align="space-around">
-                            <TextField placeholder="Shopify Store Name" value={storeName} onChange={setStoreName} autoComplete="off" />
-                            <TextField placeholder="Shopify Shop Link" value={shopLink} onChange={setShopLink} autoComplete="off" />
-                            <TextField placeholder="Shopify Access Token" value={accessToken} onChange={setAccessToken} type="password" autoComplete="off" />
-                            <Button icon={PlusIcon} variant="primary" onClick={handleAddStore}>{editId ? "Update Store" : "Add Store"}</Button>
-                        </InlineStack>
-                    </Card>
+                        <TextField placeholder="Shopify Store Name" value={storeName} onChange={setStoreName} autoComplete="off" />
+                        <TextField placeholder="Shopify Shop Link" value={shopLink} onChange={setShopLink} autoComplete="off" />
+                        <TextField placeholder="Shopify Access Token" value={accessToken} onChange={setAccessToken} type="password" autoComplete="off" />
+                        <Button icon={PlusIcon} variant="primary" onClick={handleAddStore}>{editId ? "Update Store" : "Add Store"}</Button>
+                    </InlineStack>
+                </Card>)}
 
-                    <Card>
+                <Card>
                     <DataTable
                         verticalAlign="middle"
-                            columnContentTypes={["text", "text", "text", "numeric"]}
-                            headings={["Store Name", "Shop Link", "Access Token", "Actions"]}
-                            rows={rows}
-                        />
-                    </Card>
-                </Layout.Section>
-            </Layout>
+                        columnContentTypes={["text", "text", "text", "text"]}
+                        headings={isAdmin ? userHeading : storeHeading}
+                        rows={isAdmin ? userRows : storeRows}
+                    />
+                </Card>
+            </Layout.Section>
+        </Layout>
     );
 };
 

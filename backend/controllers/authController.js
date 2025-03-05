@@ -6,14 +6,23 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const handleSignUp = async (req, res) => {
-    const { name, email, password, businessName, storeUrl, phone, address } = req.body;
+    const { name, email, password, isAdmin, businessName, storeUrl, accessToken, phone, address } = req.body;
 
     try {
         const existingVendor = await Vendor.findOne({ email });
         if (existingVendor) return res.status(400).json({ message: "Vendor already exists" });
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newVendor = new Vendor({ name, email, password: hashedPassword, businessName, storeUrl, phone, address });
+        const newVendor = new Vendor({
+            name,
+            email,
+            password: hashedPassword,
+            businessName,
+            phone,
+            address,
+            isAdmin,
+            ...(isAdmin && { storeUrl, accessToken })
+        });
 
         await newVendor.save();
         res.status(201).json({ message: "Vendor registered successfully" });
@@ -29,11 +38,30 @@ export const handleSignin = async (req, res) => {
     try {
         const vendor = await Vendor.findOne({ email });
         if (!vendor) return res.status(400).json({ message: "Vendor not found" });
+        if (!vendor.isApproved) return res.status(403).json({ message: "Awaiting admin approval" });
 
         const isMatch = await bcrypt.compare(password, vendor.password);
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-        const token = jwt.sign({ id: vendor._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: vendor._id, isAdmin: vendor.isAdmin }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+        const responseData = {
+            token,
+            vendor: {
+                id: vendor._id,
+                name: vendor.name,
+                email: vendor.email,
+                isAdmin: vendor.isAdmin,
+                businessName: vendor.businessName,
+                phone: vendor.phone,
+                address: vendor.address
+            }
+        };
+
+        if (vendor.isAdmin) {
+            responseData.vendor.storeUrl = vendor.storeUrl
+        }
+
         res.json({
             token,
             vendor: {
