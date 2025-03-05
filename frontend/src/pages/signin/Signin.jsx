@@ -26,6 +26,7 @@ const Signin = () => {
         try {
             const res = await axios.post("http://localhost:5000/api/auth/vendor/signin", formData);
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem('isAdmin', res.data.vendor.isAdmin);
             if (updateVendor) updateVendor(res.data.vendor);
             navigate("/");
         } catch (error) {

@@ -8,7 +8,9 @@ const API_URL_VENDOR = "http://localhost:5000/api/vendor/pending"
 
 const ShopifyTable = () => {
 
-    const isAdmin = true;
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    const token = localStorage.getItem("token");
+
     const [storeName, setStoreName] = useState("");
     const [accessToken, setAccessToken] = useState("");
     const [stores, setStores] = useState([]);
@@ -19,28 +21,32 @@ const ShopifyTable = () => {
 
     useEffect(() => {
         if (isAdmin) {
+            const fetchPending = async () => {
+                const res = await axios.get(API_URL_VENDOR, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                console.log(res);
+                setPendingUsers(res.data);
+            };
             fetchPending();
         } else {
+            const fetchStores = (async () => {
+                const res = await axios.get(API_URL_STORE, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setStores(res.data);
+            });
             fetchStores();
         }
-    }, [isAdmin]);
-
-    const fetchStores = async () => {
-        const res = await axios.get(API_URL_STORE);
-        setStores(res.data);
-    };
-
-    const fetchPending = async () => {
-        const res = await axios.get(API_URL_VENDOR);
-        console.log(res);
-        setPendingUsers(res.data);
-    };
+    }, [isAdmin, token]);
 
     const handleAddStore = async () => {
         if (!storeName || !accessToken) return;
 
         const storeData = { storeName, shopLink, accessToken, id: editId };
-        await axios.post(API_URL_STORE, storeData);
+        await axios.post(API_URL_STORE, storeData, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
 
         setStoreName("");
         setAccessToken("");
@@ -50,12 +56,16 @@ const ShopifyTable = () => {
     };
 
     const handleApprove = async (id) => {
-        const response = await axios.put(`http://localhost:5000/api/vendor/pending/${id}`);
+        const response = await axios.put(`http://localhost:5000/api/vendor/pending/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
         setPendingUsers(pendingUsers.filter(user => user._id !== id));
     }
 
     const handleReject = async (id) => {
-        const response = await axios.delete(`http://localhost:5000/api/vendor/pending/${id}`);
+        const response = await axios.delete(`http://localhost:5000/api/vendor/pending/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
         setPendingUsers(pendingUsers.filter(user => user._id !== id));
     }
 
@@ -67,7 +77,9 @@ const ShopifyTable = () => {
     };
 
     const handleDelete = async (id) => {
-        await axios.delete(`${API_URL_STORE}/${id}`);
+        await axios.delete(`${API_URL_STORE}/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
         fetchStores();
     };
 

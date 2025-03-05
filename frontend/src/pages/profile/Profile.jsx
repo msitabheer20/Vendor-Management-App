@@ -20,6 +20,7 @@ const Profile = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("isAdmin");
         updateVendor(null);
         navigate("/signin");
     };

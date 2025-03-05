@@ -1,4 +1,4 @@
-import { Card, Text, Button, Box } from "@shopify/polaris";
+import { Card, Text, Button, Box, Spinner } from "@shopify/polaris";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -27,7 +27,11 @@ const ShopCard = ({ id, url, token }) => {
 	};
 
 	if (isPending) {
-		return <Text as="p" variant="bodyMd">Loading...</Text>
+		return (
+			<Box padding="400" display="flex" align="center" justify="center">
+				<Spinner accessibilityLabel="Loading vendor profile" size="small" />
+			</Box>
+		);
 	}
 
 	if (isError) {

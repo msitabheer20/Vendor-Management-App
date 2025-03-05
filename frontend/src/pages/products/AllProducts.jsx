@@ -1,69 +1,76 @@
-import { useEffect, useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Page, Card, Text, Box, InlineStack, Button, Spinner } from "@shopify/polaris";
+import { Box, Button, Card, InlineStack, Page, Spinner, Text } from "@shopify/polaris";
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import { DeleteIcon } from '@shopify/polaris-icons';
-import { useContext } from "react";
-import VendorContext from "../../context/VendorContext";
 
-const ProductDetails = () => {
+const AllProducts = () => {
 
-	const { vendor } = useContext(VendorContext);
-	const vendorName = vendor?.name;
-
-	const { id } = useParams(); // Get the ID from the route
-	const navigate = useNavigate();
-	const location = useLocation();
-	const { url, token } = location.state || {};
-
-
-
-	const [products, setProducts] = useState([]);
+	const [allProducts, setAllProducts] = useState([]);
+	const [userData, setUserData] = useState(null);
+	const [storeData, setStoreData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	useEffect(() => {
-		if (!url || !token) {
-			setError("Missing shop credentials");
-			setLoading(false);
-			return;
-		}
+	const navigate = useNavigate();
 
-		const fetchProducts = async () => {
+	useEffect(() => {
+		const fetchData = async () => {
 			try {
-				const response = await axios.get(`http://localhost:5000/api/products`, {
-					params: { vendorName, url, token },
+				const localToken = localStorage.getItem("token");
+				const adminResponse = await axios.get("http://localhost:5000/api/vendor", {
+					headers: { "Authorization": `Bearer ${localToken}` }
+				});
+				const adminData = adminResponse.data;
+				setUserData(adminData);
+
+				const productResponse = await axios.get("http://localhost:5000/api/products/all", {
+					headers: { "Authorization": `Bearer ${localToken}` },
+					params: { url: adminData.storeUrl, token: adminData.accessToken }
+				});
+				setAllProducts(productResponse.data.products);
+
+				const res = await axios.get("http://localhost:5000/api/shop", {
+					params: {url: adminData.storeUrl, token: adminData.accessToken},
+					headers: { "Authorization": `Bearer ${localToken}` }
 				});
 
-				setProducts(response.data.products);
-			} catch (err) {
-				setError("Failed to fetch products");
+				setStoreData(res.data.shop);
+
+			} catch (error) {
+				setError("Error fetching Products");
 			}
 			setLoading(false);
 		};
 
-		fetchProducts();
-	}, [vendorName, url, token]);
+		fetchData();
+	}, []);
 
-	// console.log(products);
+	const url = userData?.storeUrl;
+	const token = userData?.accessToken;
 
 	const handleProductClick = (productId, name) => {
-		navigate(`/product/${id}/${productId}`, { state: { url, token, name } });
+		navigate(`/product/${storeData.id}/${productId}`, { state: { url, token, name } });
 	}
 
 	const handleProductDelete = async (productId) => {
+		if (!url || !token) {
+			alert("Missing store credentials. Please refresh and try again.");
+			return;
+		}
 		try {
-			const response = await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+			await axios.delete(`http://localhost:5000/api/products/${productId}`, {
 				params: { url, token },
 			});
 
 			alert("Product deleted");
-			setProducts(products.filter((product) => product.id !== productId))
+			setAllProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId))
 
 		} catch (err) {
 			alert("Failed to delete product");
 		}
 	}
+
 
 	return (
 		<Page
@@ -75,7 +82,7 @@ const ProductDetails = () => {
 
 			<Card>
 				<Box padding="200">
-					<Text as="h1" variant="headingLg">Shop ID: {id}</Text>
+					<Text as="h1" variant="headingLg">Shop ID: {storeData?.id}</Text>
 				</Box>
 
 				{loading ? (
@@ -87,9 +94,9 @@ const ProductDetails = () => {
 				) : (
 					<Box padding="200">
 						<Text as="h2" variant="headingMd">Products:</Text>
-						{products.length > 0 ? (
+						{allProducts.length > 0 ? (
 							<div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-								{products.map((product) => (
+								{allProducts.map((product) => (
 									<div key={product.id} style={{ width: "250px", textAlign: "center", border: "1px solid #ddd", borderRadius: "8px", padding: "10px" }}>
 										<Text as="p" variant="bodyMd">{product.title}</Text>
 										{product.image && product.image.src && (
@@ -110,7 +117,7 @@ const ProductDetails = () => {
 			</Card>
 
 		</Page>
-	);
-};
+	)
+}
 
-export default ProductDetails;
+export default AllProducts

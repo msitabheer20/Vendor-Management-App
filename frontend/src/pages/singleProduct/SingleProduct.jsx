@@ -1,4 +1,4 @@
-import { Badge, BlockStack, Box, Button, Grid, Image, InlineCode, InlineGrid, InlineStack, Page, Text } from "@shopify/polaris";
+import { Badge, BlockStack, Box, Button, Grid, Image, InlineCode, InlineGrid, InlineStack, Page, Spinner, Text } from "@shopify/polaris";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom"
 import axios from 'axios'
@@ -36,8 +36,20 @@ const SingleProduct = () => {
 	console.log("product are here", product);
 	console.log("images are here", images);
 
-	if (loadingProduct) return <Text>Loading Product...</Text>;
-	if (loadingImages) return <Text>Loading Images...</Text>;
+	if (loadingProduct) {
+		return (
+			<Box padding="400" display="flex" align="center" justify="center">
+				<Spinner accessibilityLabel="Loading vendor profile" size="large" />
+			</Box>
+		);
+	}
+	if (loadingImages) {
+		return (
+			<Box padding="400" display="flex" align="center" justify="center">
+				<Spinner accessibilityLabel="Loading vendor profile" size="large" />
+			</Box>
+		);
+	}
 
 	return (
 		<Page

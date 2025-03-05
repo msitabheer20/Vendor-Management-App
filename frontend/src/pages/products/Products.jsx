@@ -8,19 +8,23 @@ import {PlusIcon} from '@shopify/polaris-icons';
 
 const API_URL = "http://localhost:5000/api/stores";
 
-const Products = () => {    
+const Products = () => {
 
     const [stores, setStores] = useState([]);
     const navigate = useNavigate();
-
+    
     useEffect(() => {
+        const token = localStorage.getItem("token");
+        const fetchStores = async () => {
+            const res = await axios.get(API_URL, {
+                headers: {"Authorization": `Bearer ${token}`}
+            });
+            setStores(res.data);
+        };
         fetchStores();
     }, []);
 
-    const fetchStores = async () => {
-        const res = await axios.get(API_URL);
-        setStores(res.data);
-    };
+    
 
     return (
         <>

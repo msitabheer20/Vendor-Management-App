@@ -11,6 +11,7 @@ import { VendorProvider } from "../context/VendorContextProvider";
 import ProductDetails from "../pages/productDetails/productDetails";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import SingleProduct from "../pages/singleProduct/SingleProduct";
+import AllProducts from "../pages/products/AllProducts";
 
 const isAuthenticated = () => {
 	return localStorage.getItem("token") !== null;
@@ -19,6 +20,8 @@ const isAuthenticated = () => {
 const ProtectedRoute = ({ element }) => {
 	return isAuthenticated() ? element : <Navigate to="/signin" />;
 };
+
+const isAdmin = localStorage.getItem("isAdmin") === "true";
 
 const AppRoutes = () => {
 	return (
@@ -33,11 +36,11 @@ const AppRoutes = () => {
 					<Route path="/" element={<Layout />}>
 						<Route index element={<ProtectedRoute element={<Dashboard />} />} />
 						<Route path="/addNew" element={<ProtectedRoute element={<AddProduct />} />} />
-						<Route path="/products" element={<ProtectedRoute element={<Products />} />} />
+						<Route path="/products" element={<ProtectedRoute element={isAdmin ? <AllProducts /> : <Products />} />} />
 						<Route path="/product/:id" element={<ProtectedRoute element={<ProductDetails />} />} />
 						<Route path="/product/:id/:productId" element={<ProtectedRoute element={<SingleProduct />} />} />
 						<Route path="/inventory" element={<ProtectedRoute element={<Inventory />} />} />
-						<Route path="/profile" element={<ProtectedRoute element={<Profile />} />}/>
+						<Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
 					</Route>
 				</Routes>
 			</Router>

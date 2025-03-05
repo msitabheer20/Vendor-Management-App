@@ -59,21 +59,11 @@ export const handleSignin = async (req, res) => {
         };
 
         if (vendor.isAdmin) {
-            responseData.vendor.storeUrl = vendor.storeUrl
+            responseData.vendor.storeUrl = vendor.storeUrl;
+            responseData.vendor.accessToken = vendor.accessToken;
         }
 
-        res.json({
-            token,
-            vendor: {
-                id: vendor._id,
-                name: vendor.name,
-                email: vendor.email,
-                businessName: vendor.businessName,
-                storeUrl: vendor.storeUrl,
-                phone: vendor.phone,
-                address: vendor.address
-            }
-        });
+        res.json(responseData);
 
     } catch (error) {
         res.status(500).json({ message: "Server error" });
