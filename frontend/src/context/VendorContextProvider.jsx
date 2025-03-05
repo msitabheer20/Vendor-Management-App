@@ -6,6 +6,9 @@ import VendorContext from './VendorContext'
 export const VendorProvider = ({ children }) => {
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(() => {
+    return localStorage.getItem("isAdmin") === "true"
+  })
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -16,13 +19,12 @@ export const VendorProvider = ({ children }) => {
           return;
         }
 
-        // console.log("Fetching vendor with token:", token);
-
         const res = await axios.get("http://localhost:5000/api/vendor/", {
           headers: { Authorization: `Bearer ${token}` }
         });
         
         ("Fetched vendor data:", res.data);
+        localStorage.setItem("isAdmin", isAdmin);
         setVendor(res.data);
       } catch (error) {
         console.error("Error fetching vendor:", error.response?.data || error);
@@ -32,16 +34,15 @@ export const VendorProvider = ({ children }) => {
     };
 
     fetchVendor();
-  }, []);
+  }, [isAdmin]);
 
 
   const updateVendor = (vendorData) => {
-    // console.log("Updating vendor:", vendorData);
     setVendor(vendorData);
   };
 
   return (
-    <VendorContext.Provider value={{ vendor, updateVendor, loading }}>
+    <VendorContext.Provider value={{ isAdmin, setIsAdmin, vendor, updateVendor, loading }}>
       {children}
     </VendorContext.Provider>
   );

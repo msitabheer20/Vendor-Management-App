@@ -25,7 +25,7 @@ const ShopifyTable = () => {
                 const res = await axios.get(API_URL_VENDOR, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                console.log(res);
+
                 setPendingUsers(res.data);
             };
             fetchPending();
@@ -88,8 +88,6 @@ const ShopifyTable = () => {
         setCopiedIndex(index);
         setTimeout(() => setCopiedIndex(null), 1500);
     };
-
-    console.log(pendingUsers)
 
     const userRows = pendingUsers.map((user, index) => [
         user.name,

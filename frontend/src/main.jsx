@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
+import { VendorProvider } from './context/VendorContextProvider.jsx';
 
 const darkTheme = {
   colors: {
@@ -26,7 +27,9 @@ createRoot(document.getElementById('root')).render(
   <AppProvider i18n={{}} features={{ newDesignLanguage: true }} theme={darkTheme}>
     <QueryClientProvider client={queryClient}>
       <StrictMode>
-        <App />
+        <VendorProvider>
+          <App />
+        </VendorProvider>
       </StrictMode>
     </QueryClientProvider>
   </AppProvider>

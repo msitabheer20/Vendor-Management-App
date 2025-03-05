@@ -33,9 +33,6 @@ const SingleProduct = () => {
 		queryFn: fetchImages,
 	});
 
-	console.log("product are here", product);
-	console.log("images are here", images);
-
 	if (loadingProduct) {
 		return (
 			<Box padding="400" display="flex" align="center" justify="center">

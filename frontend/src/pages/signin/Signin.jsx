@@ -6,7 +6,7 @@ import VendorContext from "../../context/VendorContext";
 import "@shopify/polaris/build/esm/styles.css";
 
 const Signin = () => {
-    const { updateVendor } = useContext(VendorContext);
+    const { setIsAdmin,updateVendor } = useContext(VendorContext);
     const [formData, setFormData] = useState({ email: "", password: "" });
     const navigate = useNavigate();
 
@@ -26,7 +26,13 @@ const Signin = () => {
         try {
             const res = await axios.post("http://localhost:5000/api/auth/vendor/signin", formData);
             localStorage.setItem("token", res.data.token);
-            localStorage.setItem('isAdmin', res.data.vendor.isAdmin);
+
+            if (res.data?.vendor?.isAdmin) {
+                setIsAdmin(true);
+            } else {
+                setIsAdmin(false);
+            }
+
             if (updateVendor) updateVendor(res.data.vendor);
             navigate("/");
         } catch (error) {

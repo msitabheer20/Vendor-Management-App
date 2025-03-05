@@ -45,8 +45,6 @@ const ProductDetails = () => {
 		fetchProducts();
 	}, [vendorName, url, token]);
 
-	// console.log(products);
-
 	const handleProductClick = (productId, name) => {
 		navigate(`/product/${id}/${productId}`, { state: { url, token, name } });
 	}

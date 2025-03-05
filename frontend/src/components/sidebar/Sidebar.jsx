@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import "./sidebar.css";
+import { Badge, InlineStack, Text } from "@shopify/polaris";
 
 const Sidebar = ({ fn, isOpen, setIsOpen }) => {
   const location = useLocation();
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
 
   // const handleMouseEnter = () => setIsOpen(true);
   // const handleMouseLeave = () => setIsOpen(false);
@@ -28,7 +30,13 @@ const Sidebar = ({ fn, isOpen, setIsOpen }) => {
                 to="/"
                 className={`sidebar-link ${location.pathname === "/" ? "active" : ""}`}
               >
-                Dashboard
+                <InlineStack gap="200">
+                  <Text>Dashboard</Text>
+                  <Text>
+                    <Badge size="small" tone="success">{ isAdmin ? "Admin" : "Vendor"}</Badge>
+                  </Text>
+                </InlineStack>
+
               </Link>
             </li>
             <li>
