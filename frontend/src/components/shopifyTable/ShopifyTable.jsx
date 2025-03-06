@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { Button, Card, DataTable, InlineStack, Layout, Page, Text, TextField } from "@shopify/polaris";
 import { PlusIcon } from "@shopify/polaris-icons"
 import axios from "axios";
+import VendorContext from "../../context/VendorContext";
+import { useContext } from "react";
 
 const API_URL_STORE = "https://vendor-management-app.onrender.com/api/stores";
 const API_URL_VENDOR = "https://vendor-management-app.onrender.com/api/vendor/pending"
 
 const ShopifyTable = () => {
-
-    const isAdmin = localStorage.getItem("isAdmin") === "true";
-    const token = localStorage.getItem("token");
-
+    const { isAdmin } = useContext(VendorContext);
+    const [token, setToken] = useState(localStorage.getItem("token"));
     const [storeName, setStoreName] = useState("");
     const [accessToken, setAccessToken] = useState("");
     const [stores, setStores] = useState([]);
@@ -18,7 +18,8 @@ const ShopifyTable = () => {
     const [editId, setEditId] = useState(null);
     const [copiedIndex, setCopiedIndex] = useState(null);
     const [pendingUsers, setPendingUsers] = useState([]);
-
+    const [updateTrigger, setUpdateTrigger] = useState(false);
+    
     useEffect(() => {
         if (isAdmin) {
             const fetchPending = async () => {
@@ -34,36 +35,38 @@ const ShopifyTable = () => {
                 const res = await axios.get(API_URL_STORE, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
+                console.log("data from fetchStores function", res.data);
                 setStores(res.data);
             });
             fetchStores();
         }
-    }, [isAdmin, token]);
+    }, [isAdmin, token, updateTrigger]);
 
     const handleAddStore = async () => {
         if (!storeName || !accessToken) return;
 
         const storeData = { storeName, shopLink, accessToken, id: editId };
-        await axios.post(API_URL_STORE, storeData, {
+        const res = await axios.post(API_URL_STORE, storeData, {
             headers: { Authorization: `Bearer ${token}` }
         });
+
+        setUpdateTrigger(prev => !prev);
 
         setStoreName("");
         setAccessToken("");
         setShopLink("");
         setEditId(null);
-        fetchStores();
     };
 
     const handleApprove = async (id) => {
-        const response = await axios.put(`https://vendor-management-app.onrender.com/api/vendor/pending/${id}`, {
+        await axios.put(`https://vendor-management-app.onrender.com/api/vendor/pending/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         setPendingUsers(pendingUsers.filter(user => user._id !== id));
     }
 
     const handleReject = async (id) => {
-        const response = await axios.delete(`https://vendor-management-app.onrender.com/api/vendor/pending/${id}`, {
+        await axios.delete(`https://vendor-management-app.onrender.com/api/vendor/pending/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         setPendingUsers(pendingUsers.filter(user => user._id !== id));
@@ -80,7 +83,8 @@ const ShopifyTable = () => {
         await axios.delete(`${API_URL_STORE}/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
-        fetchStores();
+
+        setStores((prev) => prev.filter((store) => store._id !== id));
     };
 
     const handleCopy = (token, index) => {
@@ -102,7 +106,7 @@ const ShopifyTable = () => {
     const userHeading = ["Vendor Name", "Vendor Email", "Request At", "Actions"]
     const storeHeading = ["Store Name", "Shop Link", "Access Token", "Actions"]
 
-    const storeRows = stores.map((store, index) => [
+    const storeRows = stores?.map((store, index) => [
         store.storeName,
         store.shopLink,
         <Text key={index} className="masked">{"•".repeat(12)}</Text>,
