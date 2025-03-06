@@ -1,12 +1,15 @@
 import ShopifyTable from "../../components/shopifyTable/ShopifyTable";
 import { BlockStack, Grid, Layout, LegacyCard, Page } from "@shopify/polaris"
+import VendorContext from "../../context/VendorContext";
+import { useContext } from "react";
 
 const Dashboard = () => {
 
+	const { isAdmin } = useContext(VendorContext);
 	return (
 		<>
 			<Page
-				title="Vendor's Dashboard"
+				title={`${isAdmin ? "Admin" : "Vendor"}'s Dashboard`}
 				subtitle="Overview of entire store"
 				compactTitle
 				filterActions
