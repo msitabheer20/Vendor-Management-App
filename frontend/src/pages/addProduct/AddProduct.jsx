@@ -46,7 +46,7 @@ const AddProduct = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await axios.post("http://localhost:5000/api/products/new", JSON.stringify(product),
+			const res = await axios.post("https://vendor-management-app.onrender.com/api/products/new", JSON.stringify(product),
 				{
 					headers: { "Content-Type": "application/json" },
 				}

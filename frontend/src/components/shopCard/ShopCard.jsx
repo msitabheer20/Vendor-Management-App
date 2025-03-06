@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const fetchShopData = async ({ queryKey }) => {
 	const [, id, url, token] = queryKey;
-	const response = await axios.get(`http://localhost:5000/api/shop/`, {
+	const response = await axios.get(`https://vendor-management-app.onrender.com/api/shop/`, {
 		params: { url, token },
 	});
 	return response.data.shop;

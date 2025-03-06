@@ -11,14 +11,14 @@ const SingleProduct = () => {
 	const { productId } = useParams();
 
 	const fetchProduct = async () => {
-		const { data } = await axios.get(`http://localhost:5000/api/products/${productId}`, {
+		const { data } = await axios.get(`https://vendor-management-app.onrender.com/api/products/${productId}`, {
 			params: { url, token }
 		});
 		return data.product;
 	}
 
 	const fetchImages = async () => {
-		const { data } = await axios.get(`http://localhost:5000/api/products/${productId}/images`, {
+		const { data } = await axios.get(`https://vendor-management-app.onrender.com/api/products/${productId}/images`, {
 			params: { url, token }
 		});
 		return data.images;

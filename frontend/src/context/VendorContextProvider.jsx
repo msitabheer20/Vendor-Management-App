@@ -19,7 +19,7 @@ export const VendorProvider = ({ children }) => {
           return;
         }
 
-        const res = await axios.get("http://localhost:5000/api/vendor/", {
+        const res = await axios.get("https://vendor-management-app.onrender.com/api/vendor/", {
           headers: { Authorization: `Bearer ${token}` }
         });
         

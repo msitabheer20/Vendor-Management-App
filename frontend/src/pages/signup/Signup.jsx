@@ -1,64 +1,3 @@
-// import { useState, useEffect, useContext } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import './signup.css'
-
-// const Signup = () => {
-
-//     const [formData, setFormData] = useState({
-//         name: "",
-//         email: "",
-//         password: "",
-//         businessName: "",
-//         storeUrl: "",
-//         phone: "",
-//         address: ""
-//     });
-
-//     const navigate = useNavigate();
-
-//     useEffect(() => {
-//         if (localStorage.getItem("token")) {
-//             navigate("/");
-//         }
-//     }, []);
-
-//     const handleChange = (e) => {
-//         setFormData({ ...formData, [e.target.name]: e.target.value });
-//     };
-
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//         try {
-//             await axios.post("http://localhost:5000/api/auth/vendor/signup", formData);
-//             navigate("/signin");
-//         } catch (error) {
-//             alert(error.response.data.message);
-//         }
-//     };
-
-//     return (
-
-//         <div className="signup-container">
-//             <form className="signup-form" onSubmit={handleSubmit}>
-//                 <div style={{ display: "flex", gap: "10px" }}>
-//                     <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
-//                     <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-//                 </div>
-//                 <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-//                 <input type="text" name="businessName" placeholder="Business Name" onChange={handleChange} required />
-//                 <input type="text" name="storeUrl" placeholder="Store URL" onChange={handleChange} required />
-//                 <input type="text" name="phone" placeholder="Phone" onChange={handleChange} required />
-//                 <input type="text" name="address" placeholder="Address" onChange={handleChange} required />
-//                 <Link to="/signin" className="refer">Continue to login</Link>
-//                 <button className="signup-button" type="submit">Signup</button>
-//             </form>
-//         </div>
-
-//     );
-// };
-
-// export default Signup;
 import { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -108,7 +47,7 @@ const Signup = () => {
 		}
 
 		try {
-			await axios.post("http://localhost:5000/api/auth/vendor/signup", dataToSend);
+			await axios.post("https://vendor-management-app.onrender.com/api/auth/vendor/signup", dataToSend);
 			navigate("/signin");
 		} catch (error) {
 			alert("Signup Error : ",error.response?.data?.message);

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Page, Badge, InlineStack, Button } from "@shopify/polaris"
 import {PlusIcon} from '@shopify/polaris-icons';
 
-const API_URL = "http://localhost:5000/api/stores";
+const API_URL = "https://vendor-management-app.onrender.com/api/stores";
 
 const Products = () => {
 

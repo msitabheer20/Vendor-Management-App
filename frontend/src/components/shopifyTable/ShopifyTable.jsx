@@ -3,8 +3,8 @@ import { Button, Card, DataTable, InlineStack, Layout, Page, Text, TextField } f
 import { PlusIcon } from "@shopify/polaris-icons"
 import axios from "axios";
 
-const API_URL_STORE = "http://localhost:5000/api/stores";
-const API_URL_VENDOR = "http://localhost:5000/api/vendor/pending"
+const API_URL_STORE = "https://vendor-management-app.onrender.com/api/stores";
+const API_URL_VENDOR = "https://vendor-management-app.onrender.com/api/vendor/pending"
 
 const ShopifyTable = () => {
 
@@ -56,14 +56,14 @@ const ShopifyTable = () => {
     };
 
     const handleApprove = async (id) => {
-        const response = await axios.put(`http://localhost:5000/api/vendor/pending/${id}`, {
+        const response = await axios.put(`https://vendor-management-app.onrender.com/api/vendor/pending/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         setPendingUsers(pendingUsers.filter(user => user._id !== id));
     }
 
     const handleReject = async (id) => {
-        const response = await axios.delete(`http://localhost:5000/api/vendor/pending/${id}`, {
+        const response = await axios.delete(`https://vendor-management-app.onrender.com/api/vendor/pending/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         setPendingUsers(pendingUsers.filter(user => user._id !== id));

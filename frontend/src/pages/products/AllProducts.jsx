@@ -18,19 +18,19 @@ const AllProducts = () => {
 		const fetchData = async () => {
 			try {
 				const localToken = localStorage.getItem("token");
-				const adminResponse = await axios.get("http://localhost:5000/api/vendor", {
+				const adminResponse = await axios.get("https://vendor-management-app.onrender.com/api/vendor", {
 					headers: { "Authorization": `Bearer ${localToken}` }
 				});
 				const adminData = adminResponse.data;
 				setUserData(adminData);
 
-				const productResponse = await axios.get("http://localhost:5000/api/products/all", {
+				const productResponse = await axios.get("https://vendor-management-app.onrender.com/api/products/all", {
 					headers: { "Authorization": `Bearer ${localToken}` },
 					params: { url: adminData.storeUrl, token: adminData.accessToken }
 				});
 				setAllProducts(productResponse.data.products);
 
-				const res = await axios.get("http://localhost:5000/api/shop", {
+				const res = await axios.get("https://vendor-management-app.onrender.com/api/shop", {
 					params: {url: adminData.storeUrl, token: adminData.accessToken},
 					headers: { "Authorization": `Bearer ${localToken}` }
 				});
@@ -59,7 +59,7 @@ const AllProducts = () => {
 			return;
 		}
 		try {
-			await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+			await axios.delete(`https://vendor-management-app.onrender.com/api/products/${productId}`, {
 				params: { url, token },
 			});
 

@@ -31,7 +31,7 @@ const ProductDetails = () => {
 
 		const fetchProducts = async () => {
 			try {
-				const response = await axios.get(`http://localhost:5000/api/products`, {
+				const response = await axios.get(`https://vendor-management-app.onrender.com/api/products`, {
 					params: { vendorName, url, token },
 				});
 
@@ -51,7 +51,7 @@ const ProductDetails = () => {
 
 	const handleProductDelete = async (productId) => {
 		try {
-			const response = await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+			const response = await axios.delete(`https://vendor-management-app.onrender.com/api/products/${productId}`, {
 				params: { url, token },
 			});
 
